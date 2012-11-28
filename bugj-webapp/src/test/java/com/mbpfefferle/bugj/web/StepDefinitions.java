@@ -1,9 +1,22 @@
 package com.mbpfefferle.bugj.web;
 
+import java.net.URL;
+
 import cucumber.api.java.en.*;
 import cucumber.runtime.PendingException;
 
+import org.jboss.arquillian.drone.api.annotation.Drone; 
+import org.jboss.arquillian.test.api.ArquillianResource;
+
+import org.openqa.selenium.WebDriver;
+
 public class StepDefinitions {
+
+    @Drone
+    WebDriver browser;
+
+    @ArquillianResource
+    URL deploymentUrl;
 
     @Given("^I'm at the new bug form$")
     public void I_m_at_the_new_bug_form() throws Throwable {

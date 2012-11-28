@@ -6,7 +6,8 @@ import static org.junit.Assert.assertThat;
 import java.io.File;
 import java.net.URL;
 
-import com.thoughtworks.selenium.DefaultSelenium;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.By;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.drone.api.annotation.Drone;
@@ -25,7 +26,7 @@ public class HelloIT {
     private static final String WEBAPP_SRC = "src/main/webapp";
 
     @Drone
-    DefaultSelenium browser;
+    WebDriver browser;
 
     @ArquillianResource
     URL deploymentUrl;
@@ -46,10 +47,11 @@ public class HelloIT {
 
     @Test
     public void shouldIncludeIndexJsp() {
-        browser.open(deploymentUrl + "index.jsp");
-        assertThat("Should say hello world",
-                browser.isElementPresent("xpath=//h1[contains(text(), 'Hello World!')]"),
-                is(true));
+        browser.navigate().to(deploymentUrl + "index.jsp");
+        assertThat(
+            browser.findElement(
+                    By.xpath("//h1[contains(text(), 'Hello World!')]")),
+            not(nullValue()));
     }
 }
 

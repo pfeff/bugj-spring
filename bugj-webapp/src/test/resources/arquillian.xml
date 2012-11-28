@@ -8,5 +8,10 @@
             <property name="jbossHome">target/jboss-as-7.1.1.Final</property>
         </configuration>
     </container>
+
+    <extension qualifier="webdriver">
+        <property name="browserCapabilities">htmlunit</property>
+    </extension>
+
 </arquillian>
 

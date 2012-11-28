@@ -81,6 +81,12 @@
             <version>1.6.4</version>
             <scope>test</scope>
         </dependency> 
+        <dependency>
+            <groupId>org.jboss.arquillian.graphene</groupId>
+            <artifactId>arquillian-graphene</artifactId>
+            <type>pom</type>
+            <scope>test</scope>
+        </dependency>
 
         <!-- Cucumber -->
         <dependency>
