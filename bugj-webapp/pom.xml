@@ -86,12 +86,22 @@
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-java</artifactId>
-            <version>1.0.14</version>
+            <version>1.1.1</version>
         </dependency>
         <dependency>
             <groupId>info.cukes</groupId>
             <artifactId>cucumber-junit</artifactId>
-            <version>1.0.14</version>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cukespace</groupId>
+            <artifactId>cukespace-core</artifactId>
+            <version>1.0.0.Beta2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cukespace</groupId>
+            <artifactId>cukespace-jbas7</artifactId>
+            <version>1.0.0.Beta2</version>
         </dependency>
 
     </dependencies>
