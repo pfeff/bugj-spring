@@ -1,11 +1,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <h2>New Bug</h2>
-<form:form>
+<form:form action="create">
     <fieldset>
         <table>
             <tr>
-                <td><label for="synopsis" /></td>
+                <td><label for="synopsis">Synopsis</label></td>
                 <td><form:input path="synopsis"/></td>
             </tr>
             <tr>
@@ -15,6 +15,7 @@
                         <span>Submit</span>
                     </button>
                 </td>
+            </tr>
         </table>
     </fieldset>
 </form:form>
