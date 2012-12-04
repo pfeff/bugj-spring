@@ -26,6 +26,7 @@ public class StepDefinitions {
     public void I_m_at_the_new_bug_form() throws Throwable {
         // Express the Regexp above with the code you wish you had
         //throw new PendingException();
+        //browser.navigate().to(newBugUrl());
     }
 
     @When("^I enter text into the fields$")
