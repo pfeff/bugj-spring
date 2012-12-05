@@ -8,7 +8,6 @@ import com.mbpfefferle.bugj.web.BugsResource;
 import com.mbpfefferle.bugj.web.ComponentScan;
 import com.mbpfefferle.bugj.web.Initializer;
 import com.mbpfefferle.bugj.web.MvcConfig;
-import com.mbpfefferle.bugj.web.pages.bug.NewBugPage;
 
 import java.io.File;
 import java.net.URL;

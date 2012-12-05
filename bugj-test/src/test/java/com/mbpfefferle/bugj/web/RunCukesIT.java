@@ -1,12 +1,5 @@
 package com.mbpfefferle.bugj.web;
 
-import com.mbpfefferle.bugj.model.Bug;
-import com.mbpfefferle.bugj.web.BugsResource;
-import com.mbpfefferle.bugj.web.ComponentScan;
-import com.mbpfefferle.bugj.web.Initializer;
-import com.mbpfefferle.bugj.web.MvcConfig;
-import com.mbpfefferle.bugj.web.pages.bug.NewBugPage;
-
 import cucumber.runtime.arquillian.junit.Cucumber;
 
 import java.io.File;
@@ -37,20 +30,14 @@ public class RunCukesIT extends Cucumber {
             .use(MavenDependencyResolver.class)
             .loadMetadataFromPom("pom.xml");
 
-        WebArchive war = ShrinkWrap.create(WebArchive.class)
-            .addClasses(ComponentScan.class, Initializer.class, MvcConfig.class)
-            .addClasses(BugsResource.class, Bug.class)
-            .addAsLibraries(resolver
-                    .artifact("org.springframework:spring-webmvc")
-                    .artifact("cglib:cglib")
-                    .resolveAsFiles())
-            .addAsWebResource(new File(WEBAPP_SRC, "index.jsp"))
-            .addAsWebResource(new File(WEBAPP_SRC, "WEB-INF/templates/bug/new.jsp"), "WEB-INF/templates/bug/new.jsp")
-            .addAsWebResource(new File(WEBAPP_SRC, "WEB-INF/templates/bug/show.jsp"), "WEB-INF/templates/bug/show.jsp")
-            .setWebXML(new File(WEBAPP_SRC, "WEB-INF/web.xml"))
-            ;
-        //System.out.println(war.toString(true));
-        return war;
+        WebArchive war = ShrinkWrap.create(WebArchive.class);
+        for (WebArchive w : resolver
+                .artifact("com.mbpfefferle.bugj:bugj-webapp:war")
+                .resolveAs(WebArchive.class)) {
+            war.merge(w);
+            return war;
+        }
+        throw new RuntimeException("Unable to locate testable artifact");
     }
 
     @Override

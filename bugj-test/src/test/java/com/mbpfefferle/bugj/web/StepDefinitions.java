@@ -37,6 +37,7 @@ public class StepDefinitions {
         // Express the Regexp above with the code you wish you had
         //throw new PendingException();
         browser.navigate().to(newBugUrl());
+        //System.out.println(browser.getPageSource());
     }
 
     @When("^I enter text into the fields$")

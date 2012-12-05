@@ -6,17 +6,28 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>bugj</name>
+
     <modules>
         <module>bugj-webapp</module>
-    <module>bugj-test</module>
-  </modules>
+        <module>bugj-test</module>
+    </modules>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
         <spring.version>3.1.3.RELEASE</spring.version>
     </properties>
 
     <dependencyManagement>
         <dependencies>
+            <!-- Project -->
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>bugj-webapp</artifactId>
+                <type>war</type>
+                <version>1.0-SNAPSHOT</version>
+            </dependency>
+
             <!-- Java EE -->
             <dependency>
                 <groupId>org.jboss.spec</groupId>
@@ -205,25 +216,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Cucumber -->
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-java</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>info.cukes</groupId>
-            <artifactId>cucumber-junit</artifactId>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>com.github.cukespace</groupId>
-            <artifactId>cukespace-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cukespace</groupId>
-            <artifactId>cukespace-jbas7</artifactId>
-        </dependency>
-    -->
 
     </dependencies>
 
