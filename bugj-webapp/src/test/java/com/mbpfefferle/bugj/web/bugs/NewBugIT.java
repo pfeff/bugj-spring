@@ -36,54 +36,30 @@ public class NewBugIT {
 
     private static final String WEBAPP_SRC = "src/main/webapp";
 
-    @Drone
-    WebDriver browser;
-
-    @ArquillianResource
-    URL deploymentUrl;
-
-    @Page
-    NewBugPage form;
-
-    @Deployment(testable=false)
+    @Deployment
     public static WebArchive createDeployment() {
         MavenDependencyResolver resolver = DependencyResolvers
             .use(MavenDependencyResolver.class)
             .loadMetadataFromPom("pom.xml");
 
         WebArchive war = ShrinkWrap.create(WebArchive.class)
-            .addClasses(ComponentScan.class, Initializer.class, MvcConfig.class)
-            .addClasses(BugsResource.class, Bug.class)
-            .addAsLibraries(resolver
-                    .artifact("org.springframework:spring-webmvc")
-                    .artifact("cglib:cglib")
-                    .resolveAsFiles())
+            //.addClasses(ComponentScan.class, Initializer.class, MvcConfig.class)
+            //.addClasses(BugsResource.class, Bug.class)
+            //.addAsLibraries(resolver
+            //        .artifact("org.springframework:spring-webmvc")
+            //        .artifact("cglib:cglib")
+            //        .resolveAsFiles())
             .addAsWebResource(new File(WEBAPP_SRC, "index.jsp"))
-            .addAsWebResource(new File(WEBAPP_SRC, "WEB-INF/templates/bug/new.jsp"), "WEB-INF/templates/bug/new.jsp")
-            .setWebXML(new File(WEBAPP_SRC, "WEB-INF/web.xml"))
+            //.addAsWebResource(new File(WEBAPP_SRC, "WEB-INF/templates/bug/new.jsp"), "WEB-INF/templates/bug/new.jsp")
+            //.setWebXML(new File(WEBAPP_SRC, "WEB-INF/web.xml"))
             ;
-        //System.out.println(war.toString(true));
+        System.out.println(war.toString(true));
         return war;
-    }
-
-    @Before
-    public void navigateToBugForm() {
-        browser.navigate().to(deploymentUrl + "app/bugs/new");
-        //System.out.println(browser.getPageSource());
-        browser.findElement(
-                By.xpath("//h2[contains(text(), 'New Bug')]"));
     }
 
     @Test
     public void testSanity() {
         assertThat(true, is(true));
-        assertThat(form, not(nullValue()));
-    }
-
-    @Test
-    public void submitBug() {
-        form.setSynopsis("Something broke");
-        form.submit();
     }
 }
 
