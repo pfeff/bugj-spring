@@ -15,6 +15,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
+        <arquillian.spring.version>1.0.0.Beta1</arquillian.spring.version>
         <spring.version>3.1.3.RELEASE</spring.version>
     </properties>
 
@@ -85,6 +86,16 @@
                 <artifactId>arquillian-graphene</artifactId>
                 <type>pom</type>
                 <version>2.0.0.Alpha2</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-service-integration-spring-inject</artifactId>
+                <version>${arquillian.spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.arquillian.extension</groupId>
+                <artifactId>arquillian-service-integration-spring-javaconfig</artifactId>
+                <version>${arquillian.spring.version}</version>
             </dependency>
 
             <dependency>

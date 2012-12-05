@@ -10,31 +10,28 @@ import com.mbpfefferle.bugj.web.ComponentScan;
 import com.mbpfefferle.bugj.web.Initializer;
 import com.mbpfefferle.bugj.web.MvcConfig;
 
-import java.io.File;
-import java.net.URL;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.By;
-
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.drone.api.annotation.Drone;
-import org.jboss.arquillian.graphene.spi.annotations.Page;
+import org.jboss.arquillian.container.test.api.OverProtocol;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.test.api.ArquillianResource;
+import org.jboss.arquillian.spring.integration.test.annotation.SpringWebConfiguration;
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
-import org.jboss.shrinkwrap.resolver.api.maven.MavenDependencyResolver;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 @RunWith(Arquillian.class)
+@SpringWebConfiguration(servletName="dispatcher")
 public class NewBugIT {
 
+    @Autowired
+    private BugsResource target;
+
     @Deployment
+    @OverProtocol("Servlet 3.0")
     public static WebArchive createDeployment() {
         return bugWar();
     }
@@ -42,6 +39,7 @@ public class NewBugIT {
     @Test
     public void testSanity() {
         assertThat(true, is(true));
+        assertThat(target, not(nullValue()));
     }
 }
 

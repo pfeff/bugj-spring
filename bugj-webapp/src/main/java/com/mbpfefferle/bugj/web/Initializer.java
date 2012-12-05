@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -21,6 +22,8 @@ public class Initializer implements WebApplicationInitializer {
 
         AnnotationConfigWebApplicationContext mvcContext = new AnnotationConfigWebApplicationContext();
         mvcContext.register(MvcConfig.class);
+
+        servletContext.addListener(new ContextLoaderListener(new AnnotationConfigWebApplicationContext()));
 
         ServletRegistration.Dynamic dispatcher = servletContext.addServlet(
                 "dispatcher", new DispatcherServlet(mvcContext));
