@@ -32,9 +32,6 @@
                     <compilerArguments>
                         <endorseddirs>${endorsed.dir}</endorseddirs>
                     </compilerArguments>
-                    <testExcludes>
-                        <exclude>**/RunCukesIT.java</exclude>
-                    </testExcludes>
                 </configuration>
             </plugin>
             <plugin>
@@ -73,5 +70,5 @@
         </plugins>
     </build>
 
-
 </project>
+

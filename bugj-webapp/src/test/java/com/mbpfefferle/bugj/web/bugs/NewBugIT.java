@@ -1,5 +1,6 @@
 package com.mbpfefferle.bugj.web.bugs;
 
+import static com.mbpfefferle.bugj.Deployments.*;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
@@ -33,27 +34,9 @@ import org.junit.runner.RunWith;
 @RunWith(Arquillian.class)
 public class NewBugIT {
 
-    private static final String WEBAPP_SRC = "src/main/webapp";
-
     @Deployment
     public static WebArchive createDeployment() {
-        MavenDependencyResolver resolver = DependencyResolvers
-            .use(MavenDependencyResolver.class)
-            .loadMetadataFromPom("pom.xml");
-
-        WebArchive war = ShrinkWrap.create(WebArchive.class)
-            //.addClasses(ComponentScan.class, Initializer.class, MvcConfig.class)
-            //.addClasses(BugsResource.class, Bug.class)
-            //.addAsLibraries(resolver
-            //        .artifact("org.springframework:spring-webmvc")
-            //        .artifact("cglib:cglib")
-            //        .resolveAsFiles())
-            .addAsWebResource(new File(WEBAPP_SRC, "index.jsp"))
-            //.addAsWebResource(new File(WEBAPP_SRC, "WEB-INF/templates/bug/new.jsp"), "WEB-INF/templates/bug/new.jsp")
-            //.setWebXML(new File(WEBAPP_SRC, "WEB-INF/web.xml"))
-            ;
-        System.out.println(war.toString(true));
-        return war;
+        return bugWar();
     }
 
     @Test
