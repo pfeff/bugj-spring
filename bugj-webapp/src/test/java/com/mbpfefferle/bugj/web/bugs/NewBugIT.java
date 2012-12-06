@@ -10,31 +10,29 @@ import com.mbpfefferle.bugj.web.ComponentScan;
 import com.mbpfefferle.bugj.web.Initializer;
 import com.mbpfefferle.bugj.web.MvcConfig;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.OverProtocol;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.spring.integration.test.annotation.SpringWebConfiguration;
-
-import org.jboss.shrinkwrap.api.spec.WebArchive;
+import java.net.URL;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerAdapter;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 
-@RunWith(Arquillian.class)
-@SpringWebConfiguration(servletName="dispatcher")
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
+
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 public class NewBugIT {
 
-    @Autowired
-    private BugsResource target;
-
-    @Deployment
-    @OverProtocol("Servlet 3.0")
-    public static WebArchive createDeployment() {
-        return bugWar();
-    }
+    private final BugsResource target = new BugsResource();
+    private final HandlerAdapter adapter = new AnnotationMethodHandlerAdapter();
+    private final MockHttpServletRequest request = new MockHttpServletRequest();
+    private final MockHttpServletResponse response = new MockHttpServletResponse();
 
     @Test
     public void testSanity() {
@@ -46,6 +44,16 @@ public class NewBugIT {
     public void shouldCreateEmptyBugWhenParamMissing() {
         Bug emptyBug = target.populateBug("");
         assertThat(emptyBug.getSynopsis(), is(nullValue()));
+    }
+
+    @Test
+    public void shouldPopulateFormWithEmptyBug() throws Exception {
+        request.setMethod("GET");
+        request.setRequestURI("/bugs/new");
+        ModelAndView mav = adapter.handle(request, response, target);
+        Bug actual = (Bug)mav.getModel().get("bug");
+        assertThat(actual, not(nullValue()));
+        assertThat(actual.getSynopsis(), is(nullValue()));
     }
 }
 

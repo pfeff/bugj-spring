@@ -3,6 +3,7 @@ package com.mbpfefferle.bugj.web;
 import com.mbpfefferle.bugj.model.Bug;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,11 +13,16 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/bugs")
 public class BugsResource {
 
+
+    @ModelAttribute
+    public Bug populateBug(String bugId) {
+        return new Bug();
+    }
+
     @RequestMapping(value="/new", method=RequestMethod.GET)
     public ModelAndView form() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("bug/new");
-        mav.addObject("command", new Bug());
         return mav;
     }
 
