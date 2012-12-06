@@ -1,5 +1,7 @@
 package com.mbpfefferle.bugj;
 
+import java.io.File;
+
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.jboss.shrinkwrap.resolver.api.DependencyResolvers;
@@ -15,8 +17,9 @@ public class Deployments {
         WebArchive war = ShrinkWrap.create(WebArchive.class)
             .addPackage(webPackage())
             .addPackage(modelPackage())
-            .addAsLibraries(spring(resolver)
-                    .resolveAsFiles())
+            .addAsLibraries(spring(resolver))
+            .addAsLibraries(guava(resolver))
+            .addAsLibraries(jackson(resolver))
             ;
         System.out.println(war.toString(true));
         return war;
@@ -34,11 +37,25 @@ public class Deployments {
             .getPackage();
     }
 
-    public static MavenDependencyResolver spring(MavenDependencyResolver resolver) {
+    public static File[] spring(MavenDependencyResolver resolver) {
         return resolver
             .artifact("org.springframework:spring-webmvc")
-            .artifact("cglib:cglib");
+            .artifact("cglib:cglib")
+            .resolveAsFiles();
     }
 
+    public static File[] guava(MavenDependencyResolver resolver) {
+        return resolver
+            .artifact("com.google.guava:guava")
+            .resolveAsFiles()
+            ;
+    }
+
+    public static File[] jackson(MavenDependencyResolver resolver) {
+        return resolver
+            .artifact("org.codehaus.jackson:jackson-mapper-asl")
+            .resolveAsFiles()
+            ;
+    }
 }
 
