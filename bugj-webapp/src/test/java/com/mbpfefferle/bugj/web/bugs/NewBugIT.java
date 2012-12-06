@@ -41,5 +41,11 @@ public class NewBugIT {
         assertThat(true, is(true));
         assertThat(target, not(nullValue()));
     }
+
+    @Test
+    public void shouldCreateEmptyBugWhenParamMissing() {
+        Bug emptyBug = target.populateBug("");
+        assertThat(emptyBug.getSynopsis(), is(nullValue()));
+    }
 }
 
