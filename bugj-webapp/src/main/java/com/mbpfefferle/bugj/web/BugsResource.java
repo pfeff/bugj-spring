@@ -1,7 +1,11 @@
 package com.mbpfefferle.bugj.web;
 
 import com.mbpfefferle.bugj.model.Bug;
+import com.mbpfefferle.bugj.service.BugService;
 
+import org.apache.commons.lang3.StringUtils;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +17,19 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/bugs")
 public class BugsResource {
 
+    private final BugService bugService;
+
+    @Autowired
+    public BugsResource(BugService bugService) {
+        this.bugService = bugService;
+    }
 
     @ModelAttribute
     public Bug populateBug(String bugId) {
-        return new Bug();
+        if (StringUtils.isEmpty(bugId)) {
+            return new Bug();
+        }
+        return this.bugService.find(bugId);
     }
 
     @RequestMapping(value="/new", method=RequestMethod.GET)
@@ -36,6 +49,11 @@ public class BugsResource {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("bug/show");
         mav.addObject(bugId);
+
+        Bug bug = new Bug();
+        bug.setSynopsis("fake synopsis");
+        mav.addObject(bug);
+
         return mav;
     }
 

@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <h2>New Bug</h2>
-<form:form action="create">
+<form:form action="create" commandName="bug">
     <fieldset>
         <table>
             <tr>

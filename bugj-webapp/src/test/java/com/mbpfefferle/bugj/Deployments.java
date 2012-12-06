@@ -40,6 +40,7 @@ public class Deployments {
     public static File[] spring(MavenDependencyResolver resolver) {
         return resolver
             .artifact("org.springframework:spring-webmvc")
+            .artifact("org.springframework:spring-test")
             .artifact("cglib:cglib")
             .resolveAsFiles();
     }
