@@ -33,6 +33,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 public class NewBugIT {
 
+    private static final String BUG_ID = "37";
+
     private final HandlerAdapter adapter = new AnnotationMethodHandlerAdapter();
     private final MockHttpServletRequest request = new MockHttpServletRequest();
     private final MockHttpServletResponse response = new MockHttpServletResponse();
@@ -49,33 +51,30 @@ public class NewBugIT {
     }
 
     @Test
-    public void shouldCreateEmptyBugWhenParamMissing() {
-        Bug emptyBug = target.populateBug("");
-        assertThat(emptyBug.getSynopsis(), is(nullValue()));
-    }
-
-    @Test
-    public void shouldRetrieveBugWhenIdPresent() {
-        final String bugId = "37";
-
-        final Bug expected = new Bug();
-
-        context.checking(new Expectations() {{
-            oneOf(bugService).find(bugId); will(returnValue(expected));
-        }});
-
-        Bug actual = target.populateBug(bugId);
-        assertThat(actual, is(expected));
-        context.assertIsSatisfied();
-    }
-
-    @Test
     public void shouldPopulateFormWithEmptyBug() throws Exception {
         request.setMethod("GET");
         request.setRequestURI("/bugs/new");
         ModelAndView mav = adapter.handle(request, response, target);
         Bug actual = (Bug)mav.getModel().get("bug");
         assertThat(actual, not(nullValue()));
+        assertThat(actual.getSynopsis(), is(nullValue()));
+    }
+
+    @Test
+    public void shouldFindAndDisplayBug() throws Exception {
+        final Bug expected = new Bug();
+
+        context.checking(new Expectations() {{
+            oneOf(bugService).find(BUG_ID); will(returnValue(expected));
+        }});
+
+        request.setMethod("GET");
+        request.setRequestURI("/bugs/" + BUG_ID);
+        ModelAndView mav = adapter.handle(request, response, target);
+        Bug actual = (Bug)mav.getModel().get("bug");
+
+        context.assertIsSatisfied();
+        assertThat(actual, is(expected));
         assertThat(actual.getSynopsis(), is(nullValue()));
     }
 }
