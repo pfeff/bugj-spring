@@ -71,17 +71,5 @@ public class MvcConfig {
         return new MappingJacksonJsonView();
     }
 
-    @Bean
-    public JndiObjectFactoryBean jndiDataSourceLookup() {
-        JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
-        bean.setJndiName("java:jboss/datasources/BugjDS");
-
-        return bean;
-    }
-
-    @Bean
-    public DataSource dataSource() {
-        return (DataSource) jndiDataSourceLookup().getObject();
-    }
 }
 

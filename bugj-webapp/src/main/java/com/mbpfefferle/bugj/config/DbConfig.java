@@ -22,7 +22,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class DbConfig {
 
-    @Autowired
+    @Autowired(required=false)
     private DataSource dataSource;
 
     @Bean
@@ -42,7 +42,6 @@ public class DbConfig {
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setPersistenceUnitName("com.mbpfefferle.bugj.jpa");
         bean.setLoadTimeWeaver(loadTimeWeaver());
-        bean.setDataSource(dataSource);
         return bean;
     }
 
