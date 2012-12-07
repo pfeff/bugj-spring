@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -49,5 +50,19 @@ public class MvcConfig {
         return new MappingJacksonJsonView();
     }
 
+    @Bean
+    public JndiObjectFactoryBean entityManagerFactory() {
+        JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
+        bean.setJndiName("persistence/com.mbpfefferle.bugj.jpa");
+
+        //Properties prop = new Properties();
+        //prop.setProperty("hibernate.hbm2ddl.auto", "create-drop");
+        //prop.setProperty("hibernate.show_sql", "true");
+        //prop.setProperty("hibernate.format_sql", "true");
+        //prop.setProperty("hibernate.use_sql_comments", "true");
+
+        //bean.setJpaProperties(prop);
+        return bean;
+    }
 }
 
