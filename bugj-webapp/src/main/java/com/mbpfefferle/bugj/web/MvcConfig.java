@@ -5,12 +5,15 @@ import com.google.common.collect.ImmutableMap;
 
 import com.mbpfefferle.bugj.config.DbConfig;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
+import org.springframework.jndi.JndiObjectFactoryBean;
 
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -24,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
+
 
 @Configuration
 @EnableWebMvc
@@ -68,17 +72,16 @@ public class MvcConfig {
     }
 
     @Bean
-    public InstrumentationLoadTimeWeaver loadTimeWeaver() {
-        return new InstrumentationLoadTimeWeaver();
-    }
+    public JndiObjectFactoryBean jndiDataSourceLookup() {
+        JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
+        bean.setJndiName("java:jboss/datasources/ExampleDS");
 
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-        bean.setPersistenceUnitName("com.mbpfefferle.bugj.jpa");
-        bean.setLoadTimeWeaver(loadTimeWeaver());
         return bean;
     }
 
+    @Bean
+    public DataSource dataSource() {
+        return (DataSource) jndiDataSourceLookup().getObject();
+    }
 }
 
