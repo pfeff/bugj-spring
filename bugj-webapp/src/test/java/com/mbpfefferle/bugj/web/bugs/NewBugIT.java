@@ -77,5 +77,23 @@ public class NewBugIT {
         assertThat(actual, is(expected));
         assertThat(actual.getSynopsis(), is(nullValue()));
     }
+
+    @Test
+    public void shouldCreateBugFromFormPost() throws Exception {
+        final Bug expected = new Bug();
+        expected.setId(Integer.parseInt(BUG_ID));
+
+        context.checking(new Expectations() {{
+            oneOf(bugService).create(with(any(Bug.class))); will(returnValue(expected));
+        }});
+
+        request.setMethod("POST");
+        request.setRequestURI("/bugs/create");
+        ModelAndView mav = adapter.handle(request, response, target);
+
+        context.assertIsSatisfied();
+        assertThat(mav.getViewName(), is("redirect:" + BUG_ID));
+    }
+
 }
 

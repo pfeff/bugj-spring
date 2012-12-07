@@ -20,6 +20,10 @@ public class BugServiceImpl implements BugService {
         return bugDao.find(Integer.parseInt(id));
     }
 
+    public Bug create(Bug bug) {
+        bugDao.save(bug);
+        return bug;
+    }
 }
 
 

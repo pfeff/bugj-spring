@@ -6,7 +6,8 @@ import com.google.common.collect.ImmutableMap;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.jndi.JndiObjectFactoryBean;
+import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -16,7 +17,11 @@ import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses={com.mbpfefferle.bugj.web.ComponentScan.class})
+@ComponentScan(basePackageClasses={
+    com.mbpfefferle.bugj.web.ComponentScan.class,
+    com.mbpfefferle.bugj.service.ComponentScan.class,
+    com.mbpfefferle.bugj.dao.ComponentScan.class
+})
 public class MvcConfig {
 
     @Bean
@@ -51,17 +56,15 @@ public class MvcConfig {
     }
 
     @Bean
-    public JndiObjectFactoryBean entityManagerFactory() {
-        JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
-        bean.setJndiName("persistence/com.mbpfefferle.bugj.jpa");
+    public InstrumentationLoadTimeWeaver loadTimeWeaver() {
+        return new InstrumentationLoadTimeWeaver();
+    }
 
-        //Properties prop = new Properties();
-        //prop.setProperty("hibernate.hbm2ddl.auto", "create-drop");
-        //prop.setProperty("hibernate.show_sql", "true");
-        //prop.setProperty("hibernate.format_sql", "true");
-        //prop.setProperty("hibernate.use_sql_comments", "true");
-
-        //bean.setJpaProperties(prop);
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws Exception {
+        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+        bean.setPersistenceUnitName("com.mbpfefferle.bugj.jpa");
+        bean.setLoadTimeWeaver(loadTimeWeaver());
         return bean;
     }
 }

@@ -5,6 +5,7 @@ import com.mbpfefferle.bugj.model.Bug;
 public interface BugService {
 
     public Bug find(String id);
+    public Bug create(Bug bug);
 
 }
 

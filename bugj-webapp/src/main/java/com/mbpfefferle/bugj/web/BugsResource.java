@@ -32,7 +32,9 @@ public class BugsResource {
 
     @RequestMapping(value="/create", method=RequestMethod.POST)
     public String create(Bug bug) {
-        return "redirect:1";
+
+        Bug created = this.bugService.create(bug);
+        return "redirect:" + created.getId();
     }
 
     @RequestMapping(value="/{bugId}", method=RequestMethod.GET)
