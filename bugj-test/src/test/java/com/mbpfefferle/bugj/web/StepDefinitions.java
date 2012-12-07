@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 import static org.openqa.selenium.By.*;
 
+import com.mbpfefferle.bugj.web.pages.bug.BugDetailPage;
 import com.mbpfefferle.bugj.web.pages.bug.NewBugPage;
 
 import java.net.URL;
@@ -19,6 +20,8 @@ import org.openqa.selenium.WebDriver;
 
 public class StepDefinitions {
 
+    private static final String SYNOPSIS = "Something broke";
+
     @Drone
     WebDriver browser;
 
@@ -27,6 +30,9 @@ public class StepDefinitions {
 
     @Page
     NewBugPage form;
+
+    @Page
+    BugDetailPage detail;
 
     private String newBugUrl() {
         return deploymentUrl + "app/bugs/new";
@@ -44,7 +50,7 @@ public class StepDefinitions {
     public void I_enter_text_into_the_fields() throws Throwable {
         // Express the Regexp above with the code you wish you had
         //throw new PendingException();
-        form.setSynopsis("Something broke");
+        form.setSynopsis(SYNOPSIS);
     }
 
     @When("^I click submit$")
@@ -54,12 +60,17 @@ public class StepDefinitions {
         form.submit();
     }
 
-    @Then("^I should see a confirmation message$")
-    public void I_should_see_a_confirmation_message() throws Throwable {
-        // Express the Regexp above with the code you wish you had
-        //throw new PendingException();
+    @Then("^I should be redirected to the bug detail page$")
+    public void I_should_be_redirected_to_the_bug_detail_page() throws Throwable {
         browser.findElement(
                 xpath("//h2[contains(text(), 'Bug')]"));
+        String id = browser.findElement(
+                xpath("//h3[contains(text(), 'ID')]"))
+            .getText()
+            .replaceAll("ID:\\s*", "");
+
+        assertThat(browser.getCurrentUrl(), endsWith(id));
+        assertThat(detail.getSynopsis(), is(SYNOPSIS));
     }
 
     @When("^I visit 'hello.jsp'$")

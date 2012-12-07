@@ -48,4 +48,27 @@
         </dependency>
 
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>arquillian-jbossas-managed</id>
+
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+
+            <build>
+
+                <plugins>
+
+                    <plugin>
+                        <artifactId>maven-dependency-plugin</artifactId>
+                    </plugin>
+
+                </plugins>
+
+            </build>
+
+        </profile>
+    </profiles>
 </project>

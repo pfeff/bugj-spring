@@ -35,6 +35,7 @@ public class ContentNegotiationSteps {
     NewBugPage form;
 
     HttpResponse response;
+    String url;
 
     @Given("^A bug has been entered$")
     public void A_bug_has_been_entered() throws Throwable {
@@ -42,13 +43,14 @@ public class ContentNegotiationSteps {
         browser.navigate().to(newBugUrl());
         form.setSynopsis("Something broke");
         form.submit();
+        url = browser.getCurrentUrl();
     }
 
     @When("^I GET the URL with a JSON media type$")
     public void I_GET_the_URL_with_a_JSON_media_type() throws Throwable {
         // Express the Regexp above with the code you wish you had
         DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpGet getRequest = new HttpGet(bugUrl(1));
+        HttpGet getRequest = new HttpGet(url);
         getRequest.addHeader("accept", "application/json");
 
         response = httpClient.execute(getRequest);

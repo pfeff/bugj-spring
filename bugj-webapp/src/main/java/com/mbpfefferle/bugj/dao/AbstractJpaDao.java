@@ -19,10 +19,15 @@ public class AbstractJpaDao<T> implements Dao<T> {
 
     public void save(T t) {
         em.persist(t);
+        em.flush();
     }
 
     public T find(int id) {
-        return em.find(klass, id);
+        T t = em.find(klass, id);
+        if (null == t) {
+            throw new EntityNotFoundException(String.format("ID: %s", id));
+        }
+        return t;
     }
 
 }

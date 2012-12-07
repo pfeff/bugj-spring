@@ -31,13 +31,14 @@ public class RunCukesIT extends Cucumber {
             .loadMetadataFromPom("pom.xml");
 
         WebArchive war = ShrinkWrap.create(WebArchive.class);
+
         for (WebArchive w : resolver
                 .artifact("com.mbpfefferle.bugj:bugj-webapp:war")
                 .resolveAs(WebArchive.class)) {
             war.merge(w);
-            return war;
         }
-        throw new RuntimeException("Unable to locate testable artifact");
+
+        return war;
     }
 
     @Override

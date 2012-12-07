@@ -5,6 +5,7 @@ import com.mbpfefferle.bugj.model.Bug;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BugServiceImpl implements BugService {
@@ -20,6 +21,7 @@ public class BugServiceImpl implements BugService {
         return bugDao.find(Integer.parseInt(id));
     }
 
+    @Transactional
     public Bug create(Bug bug) {
         bugDao.save(bug);
         return bug;

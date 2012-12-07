@@ -17,7 +17,7 @@ public class NewBugPage {
     @FindBy(xpath="//button[span='Submit']")
     private WebElement button;
 
-    public String getSynopsys() {
+    public String getSynopsis() {
         return synopsis.getText();
     }
 

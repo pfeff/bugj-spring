@@ -1,5 +1,7 @@
 package com.mbpfefferle.bugj.dao;
 
+import com.mbpfefferle.bugj.config.DbConfig;
+
 import java.util.Properties;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
@@ -7,16 +9,24 @@ import javax.sql.DataSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 import org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jndi.JndiObjectFactoryBean;
 import org.springframework.mock.jndi.SimpleNamingContextBuilder;
 
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 @Configuration
-@ComponentScan(basePackageClasses={com.mbpfefferle.bugj.dao.Config.class})
+@ComponentScan(basePackageClasses={
+    com.mbpfefferle.bugj.dao.Config.class})
+@Import({DbConfig.class})
+@EnableTransactionManagement
 public class Config {
 
     @Bean
@@ -55,15 +65,19 @@ public class Config {
     //}
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws Exception {
-        SimpleNamingContextBuilder jndiBuilder
-            = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
-        jndiBuilder.bind("java:jboss/datasources/ExampleDS", testDataSource());
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        try {
+            SimpleNamingContextBuilder jndiBuilder
+                = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
+            jndiBuilder.bind("java:jboss/datasources/ExampleDS", testDataSource());
 
-        LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
-        bean.setPersistenceUnitName("com.mbpfefferle.bugj.jpa");
-        bean.setLoadTimeWeaver(loadTimeWeaver());
-        return bean;
+            LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
+            bean.setPersistenceUnitName("com.mbpfefferle.bugj.jpa");
+            bean.setLoadTimeWeaver(loadTimeWeaver());
+            return bean;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
