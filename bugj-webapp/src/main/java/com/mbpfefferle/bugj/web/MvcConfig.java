@@ -74,7 +74,7 @@ public class MvcConfig {
     @Bean
     public JndiObjectFactoryBean jndiDataSourceLookup() {
         JndiObjectFactoryBean bean = new JndiObjectFactoryBean();
-        bean.setJndiName("java:jboss/datasources/ExampleDS");
+        bean.setJndiName("java:jboss/datasources/BugjDS");
 
         return bean;
     }

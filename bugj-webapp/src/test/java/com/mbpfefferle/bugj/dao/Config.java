@@ -34,7 +34,7 @@ public class Config {
 
             SimpleNamingContextBuilder jndiBuilder
                 = SimpleNamingContextBuilder.emptyActivatedContextBuilder();
-            jndiBuilder.bind("java:jboss/datasources/ExampleDS", dataSource);
+            jndiBuilder.bind("java:jboss/datasources/BugjDS", dataSource);
 
             return dataSource;
         } catch (Exception e) {
