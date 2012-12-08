@@ -1,6 +1,7 @@
 package com.mbpfefferle.bugj.web;
 
 import cucumber.runtime.arquillian.junit.Cucumber;
+import cucumber.runtime.formatter.FormatterFactory;
 
 import java.io.File;
 
@@ -46,6 +47,11 @@ public class RunCukesIT extends Cucumber {
         runtimeOptions.featurePaths.add(
                 "classpath:com/mbpfefferle/bugj/web");
         runtimeOptions.glue.add("classpath:com/mbpfefferle/bugj/web");
+
+        FormatterFactory formatterFactory = new FormatterFactory();
+        runtimeOptions.formatters.add(formatterFactory.create("progress"));
+        runtimeOptions.formatters.add(formatterFactory.create("html:target/cucumber-html-report"));
+        //@Cucumber.Options(format = {"pretty", "html:target/cucumber-html-report", "json-pretty:target/cucumber-report.json"}
     }
 }
 
