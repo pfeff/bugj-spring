@@ -22,7 +22,7 @@ public class BugsResource {
         this.bugService = bugService;
     }
 
-    @RequestMapping(value="/new", method=RequestMethod.GET)
+    @New
     public ModelAndView form() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("bug/new");
@@ -30,15 +30,15 @@ public class BugsResource {
         return mav;
     }
 
-    @RequestMapping(value="/create", method=RequestMethod.POST)
+    @Create
     public String create(Bug bug) {
 
         Bug created = this.bugService.create(bug);
         return "redirect:" + created.getId();
     }
 
-    @RequestMapping(value="/{bugId}", method=RequestMethod.GET)
-    public ModelAndView show(@PathVariable String bugId) {
+    @Show
+    public ModelAndView show(@PathVariable("id") String bugId) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("bug/show");
         mav.addObject(bugId);
