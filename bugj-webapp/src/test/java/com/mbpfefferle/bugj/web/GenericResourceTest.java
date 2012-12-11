@@ -7,17 +7,19 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 public class GenericResourceTest {
 
     private static final String RESOURCE_PATH = "foo";
+    private static final String RESOURCE_ID = "37";
 
-    private final GenericResource<Object> target = new GenericResource() {
-        protected String getResourcePath() {
-            return RESOURCE_PATH;
-        }
-    };
+    private final GenericResource<Object> target = new TestResource();
+
+    @RequestMapping("/foo")
+    private static class TestResource extends GenericResource<Object> {
+    }
 
     @Test
     public void testSanity() {
@@ -35,5 +37,14 @@ public class GenericResourceTest {
 
     }
 
+    @Test
+    public void shouldReadResourcePathFromRequestMapping() {
+        assertThat(target.getResourcePath(), is("foo"));
+    }
+
+    @Test
+    public void shouldConstructPathForResourceID() {
+        assertThat(target.pathTo(RESOURCE_ID), is("/foo/" + RESOURCE_ID));
+    }
 }
 

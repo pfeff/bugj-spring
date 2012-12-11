@@ -34,6 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class NewBugIT {
 
     private static final String BUG_ID = "37";
+    private static final int BUG_ID_INT = Integer.parseInt(BUG_ID);
 
     private final HandlerAdapter adapter = new AnnotationMethodHandlerAdapter();
     private final MockHttpServletRequest request = new MockHttpServletRequest();
@@ -53,7 +54,7 @@ public class NewBugIT {
     @Test
     public void shouldPopulateFormWithEmptyBug() throws Exception {
         request.setMethod("GET");
-        request.setRequestURI("/bugs/new");
+        request.setRequestURI("/bug/new");
         ModelAndView mav = adapter.handle(request, response, target);
         Bug actual = (Bug)mav.getModel().get("bug");
         assertThat(actual, not(nullValue()));
@@ -69,8 +70,11 @@ public class NewBugIT {
         }});
 
         request.setMethod("GET");
-        request.setRequestURI("/bugs/" + BUG_ID);
+        request.setRequestURI(target.pathTo(BUG_ID));
         ModelAndView mav = adapter.handle(request, response, target);
+
+        assertThat(mav.getViewName(), is("bug/show"));
+        assertThat(mav.getModel(), hasKey("bug"));
         Bug actual = (Bug)mav.getModel().get("bug");
 
         context.assertIsSatisfied();
@@ -88,7 +92,7 @@ public class NewBugIT {
         }});
 
         request.setMethod("POST");
-        request.setRequestURI("/bugs/create");
+        request.setRequestURI("/bug/create");
         ModelAndView mav = adapter.handle(request, response, target);
 
         context.assertIsSatisfied();

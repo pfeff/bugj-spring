@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/bugs")
-public class BugsResource {
+@RequestMapping("/bug")
+public class BugsResource extends GenericResource<Bug> {
 
     private final BugService bugService;
 
@@ -39,12 +39,13 @@ public class BugsResource {
 
     @Show
     public ModelAndView show(@PathVariable("id") String bugId) {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("bug/show");
-        mav.addObject(bugId);
-        mav.addObject(bugService.find(bugId));
+        //ModelAndView mav = new ModelAndView();
+        //mav.setViewName("bug/show");
+        //mav.addObject(bugId);
+        //mav.addObject(bugService.find(bugId));
 
-        return mav;
+        //return mav;
+        return this.show(bugService.find(bugId));
     }
 
 }

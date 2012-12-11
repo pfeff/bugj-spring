@@ -35,7 +35,7 @@ public class StepDefinitions {
     BugDetailPage detail;
 
     private String newBugUrl() {
-        return deploymentUrl + "app/bugs/new";
+        return deploymentUrl + "app/bug/new";
     }
 
     @Given("^I'm at the new bug form$")

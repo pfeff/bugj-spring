@@ -66,7 +66,7 @@ public class ContentNegotiationSteps {
     }
 
     private String newBugUrl() {
-        return deploymentUrl + "app/bugs/new";
+        return deploymentUrl + "app/bug/new";
     }
 
     private String bugUrl(int id) {
